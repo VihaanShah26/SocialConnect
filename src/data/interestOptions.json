@@ -1,0 +1,14 @@
+[
+    { "value": "music", "label": "Music" },
+    { "value": "sports", "label": "Sports" },
+    { "value": "coding", "label": "Coding" },
+    { "value": "travel", "label": "Travel" },
+    { "value": "reading", "label": "Reading" },
+    { "value": "gaming", "label": "Gaming" },
+    { "value": "cooking", "label": "Cooking" },
+    { "value": "photography", "label": "Photography" },
+    { "value": "art", "label": "Art" },
+    { "value": "dance", "label": "Dance" },
+    { "value": "fashion", "label": "Fashion" },
+    { "value": "swimming", "label": "Swimming" }
+]
