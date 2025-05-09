@@ -48,35 +48,39 @@ const FindOthers = () => {
   };
 
   return (
-    <Container className="mt-5">
-      <h2 className="mb-4">Find Others</h2>
-      <Form className="mb-4">
-        <Form.Group className="mb-3">
-          <Form.Control
-            type="text"
-            placeholder="Search by first or last name"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group>
-          <Select
-            isMulti
-            options={interestOptions}
-            value={selectedInterests.interests}
-            onChange={(selected) => setSelectedInterests({ interests: selected || [] })}
-            placeholder="Filter by interests"
-          />
-        </Form.Group>
-      </Form>
-      <Row>
-        {filteredUsers().map((user, idx) => (
-          <Col md={6} lg={4} key={idx}>
-            <UserCard {...user} />
-          </Col>
-        ))}
-      </Row>
-    </Container>
+    <div style={{ backgroundColor: '#f0f2f5', minHeight: '100vh', paddingTop: '40px' }}>
+      <Container>
+        <h2 className="text-center mb-5 fw-bold">Find Others</h2>
+        <div className="bg-white p-4 rounded shadow-sm mb-4">
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Control
+                type="text"
+                placeholder="Search by first or last name"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Select
+                isMulti
+                options={interestOptions}
+                value={selectedInterests.interests}
+                onChange={(selected) => setSelectedInterests({ interests: selected || [] })}
+                placeholder="Filter by interests"
+              />
+            </Form.Group>
+          </Form>
+        </div>
+        <Row>
+          {filteredUsers().map((user, idx) => (
+            <Col md={6} lg={4} className="mb-4" key={idx}>
+              <UserCard {...user} />
+            </Col>
+          ))}
+        </Row>
+      </Container>
+    </div>
   );
 };
 

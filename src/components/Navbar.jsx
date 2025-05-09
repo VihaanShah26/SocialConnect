@@ -24,7 +24,7 @@ const NavbarComponent = () => {
   };
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
         <Navbar.Brand as={Link} to="/">SocialConnect</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -35,7 +35,7 @@ const NavbarComponent = () => {
             <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
           </Nav>
           {user ? (
-            <Button variant="outline-danger" onClick={handleSignOut}>Sign Out</Button>
+            <Button variant="outline-light" onClick={handleSignOut}>Sign Out</Button>
           ) : (
             <Button variant="primary" as={Link} to="/login">Sign In</Button>
           )}

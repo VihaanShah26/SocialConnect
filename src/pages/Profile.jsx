@@ -103,74 +103,80 @@ const Profile = () => {
   };
 
   return (
-    <Container className="mt-5">
-      <h2 className="mb-4">Edit Your Profile</h2>
-      <Form onSubmit={handleSubmit}>
-        <Row>
-          <Col md={6}>
+    <div style={{ backgroundColor: '#f0f2f5', minHeight: '100vh', paddingTop: '40px' }}>
+      <Container>
+        <div className="bg-white p-5 rounded shadow-sm">
+          <h2 className="mb-4 text-center fw-bold">Edit Your Profile</h2>
+          <Form onSubmit={handleSubmit}>
+            <Row>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>First Name</Form.Label>
+                  <Form.Control
+                    name="firstName"
+                    type="text"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6}>
+                <Form.Group className="mb-3">
+                  <Form.Label>Last Name</Form.Label>
+                  <Form.Control
+                    name="lastName"
+                    type="text"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    required
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+
             <Form.Group className="mb-3">
-              <Form.Label>First Name</Form.Label>
+              <Form.Label>Email</Form.Label>
               <Form.Control
-                name="firstName"
-                type="text"
-                value={formData.firstName}
+                name="email"
+                type="email"
+                value={formData.email}
                 onChange={handleChange}
                 required
               />
             </Form.Group>
-          </Col>
-          <Col md={6}>
-            <Form.Group className="mb-3">
-              <Form.Label>Last Name</Form.Label>
+
+            <Form.Group className="mb-4">
+              <Form.Label>Phone Number</Form.Label>
               <Form.Control
-                name="lastName"
-                type="text"
-                value={formData.lastName}
+                name="phone"
+                type="tel"
+                value={formData.phone}
                 onChange={handleChange}
                 required
               />
             </Form.Group>
-          </Col>
-        </Row>
 
-        <Form.Group className="mb-3">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
+            <Form.Group className="mb-4">
+              <Form.Label>Interests</Form.Label>
+              <Select
+                isMulti
+                options={interestOptions}
+                value={formData.interests['interests']}
+                onChange={handleInterestsChange}
+                className="basic-multi-select"
+                classNamePrefix="select"
+                placeholder="Select your interests..."
+              />
+            </Form.Group>
 
-        <Form.Group className="mb-4">
-          <Form.Label>Phone Number</Form.Label>
-          <Form.Control
-            name="phone"
-            type="tel"
-            value={formData.phone}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-4">
-          <Form.Label>Interests</Form.Label>
-          <Select
-            isMulti
-            options={interestOptions}
-            value={formData.interests['interests']}
-            onChange={handleInterestsChange}
-            className="basic-multi-select"
-            classNamePrefix="select"
-            placeholder="Select your interests..."
-          />
-        </Form.Group>
-
-        <Button variant="primary" type="submit">Save Profile</Button>
-      </Form>
-    </Container>
+            <div className="text-center">
+              <Button variant="primary" type="submit">Save Profile</Button>
+            </div>
+          </Form>
+        </div>
+      </Container>
+    </div>
   );
 };
 
