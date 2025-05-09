@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import FindOthers from './pages/FindOthers';
 import Profile from './pages/Profile';
+import Login from './utilities/Login';
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/find" element={<FindOthers />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
   );

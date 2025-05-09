@@ -11,12 +11,16 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
+    "@supabase/auth-ui-react": "^0.4.7",
+    "@supabase/supabase-js": "^2.49.4",
     "bootstrap": "^5.3.6",
+    "dotenv": "^16.5.0",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.5.3",
-    "react-select": "^5.10.1"
+    "react-select": "^5.10.1",
+    "supabase": "^2.22.12"
   },
   "devDependencies": {
     "@testing-library/react": "^16.2.0",

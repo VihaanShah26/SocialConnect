@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import Select from 'react-select';
 import interestOptions from '../data/interestOptions.json';
+import { supabase } from '../utilities/Supabase';
+
 
 const Profile = () => {
   const [formData, setFormData] = useState({
@@ -9,7 +11,7 @@ const Profile = () => {
     lastName: '',
     email: '',
     phone: '',
-    interests: [],
+    interests: {"interests": []},
   });
 
   const handleChange = (e) => {
@@ -20,13 +22,50 @@ const Profile = () => {
   const handleInterestsChange = (selectedOptions) => {
     setFormData((prev) => ({
       ...prev,
-      interests: selectedOptions || [],
+      interests: {"interests": selectedOptions} || {"interests": []},
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitted data:', formData);
+
+    // Check if user already exists based on email
+    const { data: existingUser, error: selectError } = await supabase
+      .from('userInfo')
+      .select('*')
+      .eq('email', formData.email)
+      .single();
+
+    if (selectError && selectError.code !== 'PGRST116') {
+      console.error('Error checking user:', selectError);
+      return;
+    }
+
+    if (existingUser) {
+      // Update existing user
+      const { data, error } = await supabase
+        .from('userInfo')
+        .update(formData)
+        .eq('email', formData.email);
+
+      if (error) {
+        console.error('Error updating user:', error);
+      } else {
+        console.log('User updated:', data);
+      }
+    } else {
+      // Insert new user
+      const { data, error } = await supabase
+        .from('userInfo')
+        .insert([formData])
+        .select();
+
+      if (error) {
+        console.error('Error inserting user:', error);
+      } else {
+        console.log('User inserted:', data);
+      }
+    }
   };
 
   return (
@@ -87,7 +126,7 @@ const Profile = () => {
           <Select
             isMulti
             options={interestOptions}
-            value={formData.interests}
+            value={formData.interests['interests']}
             onChange={handleInterestsChange}
             className="basic-multi-select"
             classNamePrefix="select"

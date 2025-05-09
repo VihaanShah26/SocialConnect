@@ -1,6 +1,7 @@
 import React from 'react';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { supabase } from '../utilities/Supabase';
 
 const NavbarComponent = () => {
   return (
@@ -14,7 +15,7 @@ const NavbarComponent = () => {
             <Nav.Link as={Link} to="/find">Find Others</Nav.Link>
             <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
           </Nav>
-          <Button variant="primary">Sign In</Button>
+          <Button variant="primary" href='/login'>Sign In</Button>
         </Navbar.Collapse>
       </Container>
     </Navbar>
