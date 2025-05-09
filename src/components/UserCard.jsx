@@ -12,8 +12,8 @@ const UserCard = ({ firstName, lastName, email, phone, interests }) => {
         </Card.Text>
         <div>
           <strong>Interests:</strong>{' '}
-          {interests && interests.length > 0 ? (
-            interests.map((interest, idx) => (
+          {interests.interests && interests.interests.length > 0 ? (
+            interests.interests.slice(0, 4).map((interest, idx) => (
               <Badge bg="info" key={idx} className="me-1">
                 {interest.label}
               </Badge>

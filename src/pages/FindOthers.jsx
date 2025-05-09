@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Form } from 'react-bootstrap';
 import Select from 'react-select';
 import UserCard from '../components/UserCard';
+import { supabase } from '../utilities/Supabase';
 
 const interestOptions = [
   { value: 'music', label: 'Music' },
@@ -16,74 +17,31 @@ const interestOptions = [
 
 const FindOthers = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedInterests, setSelectedInterests] = useState([]);
+  const [selectedInterests, setSelectedInterests] = useState({ interests: [] });
+  const [users, setUsers] = useState([]);
 
-  const mockUsers = [
-    {
-      firstName: 'Jane',
-      lastName: 'Doe',
-      email: 'jane@northwestern.edu',
-      phone: '123-456-7890',
-      interests: [
-        { label: 'Music' },
-        { label: 'Reading' },
-        { label: 'Photography' }
-      ]
-    },
-    {
-      firstName: 'John',
-      lastName: 'Smith',
-      email: 'john@northwestern.edu',
-      phone: '987-654-3210',
-      interests: [
-        { label: 'Gaming' },
-        { label: 'Coding' }
-      ]
-    },
-    {
-      firstName: 'Alice',
-      lastName: 'Nguyen',
-      email: 'alice@u.northwestern.edu',
-      phone: '312-222-3344',
-      interests: [
-        { label: 'Travel' },
-        { label: 'Cooking' },
-        { label: 'Music' }
-      ]
-    },
-    {
-      firstName: 'Carlos',
-      lastName: 'Ramirez',
-      email: 'carlos@u.northwestern.edu',
-      phone: '847-555-0192',
-      interests: [
-        { label: 'Sports' },
-        { label: 'Gaming' },
-        { label: 'Coding' }
-      ]
-    },
-    {
-      firstName: 'Priya',
-      lastName: 'Sharma',
-      email: 'priya@u.northwestern.edu',
-      phone: '224-999-1212',
-      interests: [
-        { label: 'Reading' },
-        { label: 'Photography' },
-        { label: 'Travel' }
-      ]
-    }
-  ];
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const { data, error } = await supabase.from('userInfo').select('*');
+      if (error) {
+        console.error('Error fetching users:', error);
+      } else {
+        setUsers(data);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   const filteredUsers = () => {
-    return mockUsers.filter(user => {
+    return users.filter(user => {
       const fullName = `${user.firstName} ${user.lastName}`.toLowerCase();
       const searchMatch = fullName.includes(searchTerm.toLowerCase());
 
-      const selectedLabels = selectedInterests.map(i => i.label);
+      const selectedLabels = selectedInterests.interests.map(i => i.label);
       const interestMatch =
         selectedLabels.length === 0 ||
-        user.interests.some(i => selectedLabels.includes(i.label));
+        (user.interests?.interests || []).some(i => selectedLabels.includes(i.label));
 
       return searchMatch && interestMatch;
     });
@@ -105,8 +63,8 @@ const FindOthers = () => {
           <Select
             isMulti
             options={interestOptions}
-            value={selectedInterests}
-            onChange={setSelectedInterests}
+            value={selectedInterests.interests}
+            onChange={(selected) => setSelectedInterests({ interests: selected || [] })}
             placeholder="Filter by interests"
           />
         </Form.Group>

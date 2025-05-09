@@ -1,9 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { supabase } from '../utilities/Supabase';
 
 const NavbarComponent = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => setUser(user));
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    window.location.reload();
+  };
+
   return (
     <Navbar bg="light" expand="lg">
       <Container>
@@ -15,7 +34,11 @@ const NavbarComponent = () => {
             <Nav.Link as={Link} to="/find">Find Others</Nav.Link>
             <Nav.Link as={Link} to="/profile">Profile</Nav.Link>
           </Nav>
-          <Button variant="primary" href='/login'>Sign In</Button>
+          {user ? (
+            <Button variant="outline-danger" onClick={handleSignOut}>Sign Out</Button>
+          ) : (
+            <Button variant="primary" as={Link} to="/login">Sign In</Button>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import Select from 'react-select';
 import interestOptions from '../data/interestOptions.json';
@@ -13,6 +13,36 @@ const Profile = () => {
     phone: '',
     interests: {"interests": []},
   });
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user?.email) {
+        const { data, error } = await supabase
+          .from('userInfo')
+          .select('*')
+          .eq('email', user.email)
+          .single();
+
+        if (data) {
+          setFormData({
+            firstName: data.firstName || '',
+            lastName: data.lastName || '',
+            email: data.email || '',
+            phone: data.phone || '',
+            interests: { interests: data.interests?.interests || [] },
+          });
+        } else if (error && error.code !== 'PGRST116') {
+          console.error('Error fetching user profile:', error);
+        }
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,6 +80,7 @@ const Profile = () => {
 
       if (error) {
         console.error('Error updating user:', error);
+        return; 
       } else {
         console.log('User updated:', data);
       }
@@ -62,10 +93,13 @@ const Profile = () => {
 
       if (error) {
         console.error('Error inserting user:', error);
+        return;
       } else {
         console.log('User inserted:', data);
       }
     }
+
+    alert("Profile saved successfully!");
   };
 
   return (
